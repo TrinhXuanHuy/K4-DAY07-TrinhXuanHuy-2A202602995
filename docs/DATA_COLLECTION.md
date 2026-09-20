@@ -89,8 +89,8 @@ return-refund-deadline,data/chinh-sach-doi-tra/thoi-han-hoan-tien.md,Thời hạ
 
 ## 6. Checklist trước benchmark
 
-- [ ] Có 5–10 file cùng một chủ đề, `doc_id` không trùng.
-- [ ] Mỗi file có đủ metadata bắt buộc (`doc_id`, `title`, `source_url`, `retrieved_at`, `document_version`, `audience`); `sources.csv` khớp một-một với file.
+- [ x] Có 5–10 file cùng một chủ đề, `doc_id` không trùng.
+- [ x] Mỗi file có đủ metadata bắt buộc (`doc_id`, `title`, `source_url`, `retrieved_at`, `document_version`, `audience`); `sources.csv` khớp một-một với file.
 - [ ] `audience` có ít nhất 2 giá trị khác nhau trong bộ tài liệu (`buyer`/`seller`) — nếu chỉ một giá trị thì `metadata_filter` không có gì để lọc.
 - [ ] URL là nguồn gốc, truy cập được, và dữ liệu không nhạy cảm.
 - [ ] Cả 5 benchmark query đều kiểm chứng được từ corpus, và ít nhất một câu cần `metadata_filter={"audience": "buyer"}` (hoặc `"seller"`) mới trả lời đúng.

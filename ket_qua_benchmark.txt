@@ -1,0 +1,120 @@
+================================================================================
+BENCHMARK RETRIEVAL — LAB 7: EMBEDDING & VECTOR STORE (CHECKPOINT 6)
+Chiến lược chunking đang dùng: HeadingChunker
+================================================================================
+[*] Đã nạp và chia nhỏ 156 chunks từ 9 tài liệu trong 'data\ecommerce'.
+[*] Đã nạp thành công 156 chunks vào EmbeddingStore.
+
+================================================================================
+KẾT QUẢ TRUY XUẤT 5 CÂU HỎI ĐÁNH GIÁ (CHẤM 2 MỨC: DOC-LEVEL & CONTENT-LEVEL)
+================================================================================
+
+--- [CÂU 1] [Tra số liệu (Numeric lookup)] ---
+Query:        Thời gian nhận tiền hoàn vào ví ShopeePay là bao lâu sau khi Shopee chấp nhận?
+Filter:       {'audience': 'buyer'}
+Gold Answer:  Trong vòng 24 giờ (với điều kiện Ví ShopeePay vẫn hoạt động bình thường).
+Expected Doc: thoi-gian-nhan-tien-hoan.md
+Required Key: ['24 giờ', '24h', 'ShopeePay']
+  [Kết quả TRUY XUẤT CHÍNH THỨC]:
+    1. [Score: 0.3459] Doc: thoi-gian-nhan-tien-hoan (Chunk: thoi-gian-nhan-tien-hoan#12) -> [ĐÚNG DOC]
+       Nội dung: ## ⚠️ Lưu ý: *   Đối với các đơn hàng thanh toán bằng hình thức Thanh toán khi nhận hàng hoặc Thanh toán QR/Ứng dụng ngân hàng, kênh hoàn ti...
+    2. [Score: 0.2594] Doc: phuong-thuc-gui-hang-hoan-tra-va-phi (Chunk: phuong-thuc-gui-hang-hoan-tra-va-phi#36)
+       Nội dung: ## 2.1. Phí vận chuyển ban đầu khi yêu cầu Trả hàng/Hoàn tiền: Cách kiểm tra thông tin Shopee Xu: vào mục Tôi > chọn Shopee Xu tại mục Tiện...
+    3. [Score: 0.2587] Doc: phuong-thuc-gui-hang-hoan-tra-va-phi (Chunk: phuong-thuc-gui-hang-hoan-tra-va-phi#22)
+       Nội dung: ## Sau khi bạn đã thực hiện gửi yêu cầu hoàn tiền và chọn hình thức trả hàng làgửi trả tại bưu cục trên ứng dụng Shopee...
+  => Đánh giá 2 mức:
+     * Mức 1 (Doc-level Naïve):     Top-1
+     * Mức 2 (Content-level Thực):  Không chứa đáp án
+     * Điểm đạt được (Rubric):     0/2 điểm
+
+--- [CÂU 2] [Hỏi điều kiện (Condition check)] ---
+Query:        Lý do 'Đổi ý' có được áp dụng cho sản phẩm Thiết bị Điện tử & Công nghệ có niêm phong/kích hoạt/bảo hành không?
+Filter:       None
+Gold Answer:  Không được áp dụng. Thiết bị Điện tử & Công nghệ (có niêm phong/kích hoạt/bảo hành) thuộc danh mục sản phẩm hạn chế trả hàng với lý do 'Đổi ý'.
+Expected Doc: quy-trinh-tra-hang-hoan-tien-nguoi-ban.md
+Required Key: ['Điện tử', 'hạn chế', 'Đổi ý']
+  [Kết quả TRUY XUẤT CHÍNH THỨC]:
+    1. [Score: 0.2344] Doc: gui-yeu-cau-tra-hang-hoan-tien (Chunk: gui-yeu-cau-tra-hang-hoan-tien#5)
+       Nội dung: ### Cách 2: Gửi yêu cầu tại mục Trò Chuyện Với Shopee  1. Tại trang chủ Shopee, vào mục Tôi > chọn Trò Chuyện Với Shopee. 2. Chọn Khiếu nại...
+    2. [Score: 0.2148] Doc: thoi-gian-nhan-tien-hoan (Chunk: thoi-gian-nhan-tien-hoan#14)
+       Nội dung: ## ⚠️ Lưu ý: *   Đối với các đơn hàng thanh toán bằng SPayLater kết hợp với các phương thức thanh toán khác: *   Số tiền đã thanh toán bằng...
+    3. [Score: 0.1982] Doc: quy-trinh-shopee-xu-ly-yeu-cau-tra-hang (Chunk: quy-trinh-shopee-xu-ly-yeu-cau-tra-hang#13)
+       Nội dung: # Quy trình Shopee xử lý yêu cầu Trả hàng/Hoàn tiền 5. Câu hỏi thường gặp 5.1. Yêu cầu của tôi đã tới hạn 5 ngày làm việc nhưng sao vẫn chưa...
+  => Đánh giá 2 mức:
+     * Mức 1 (Doc-level Naïve):     Không lọt Top-3
+     * Mức 2 (Content-level Thực):  Không chứa đáp án
+     * Điểm đạt được (Rubric):     0/2 điểm
+
+--- [CÂU 3] [Phân biệt đối tượng (Audience filter required)] ---
+Query:        Khi Shopee chấp nhận phương án Trả hàng & Hoàn tiền, thời hạn xử lý là bao lâu?
+Filter:       {'audience': 'buyer'}
+Gold Answer:  Người mua cần hoàn tất việc gửi trả hàng về kho Shopee/Người bán trong vòng 6 ngày kể từ thời điểm nhận được thông báo gửi trả hàng từ Shopee.
+Expected Doc: quy-trinh-shopee-xu-ly-yeu-cau-tra-hang.md
+Required Key: ['6 ngày']
+  [A/B TEST - KHÔNG LỌC metadata]:
+    Top-1: score=0.3703 | doc=quy-trinh-tra-hang-hoan-tien-nguoi-ban (audience=seller)
+    Top-2: score=0.3249 | doc=phuong-thuc-gui-hang-hoan-tra-va-phi (audience=buyer)
+    Top-3: score=0.3211 | doc=quy-trinh-tra-hang-hoan-tien-nguoi-ban (audience=seller)
+  [Kết quả TRUY XUẤT CHÍNH THỨC]:
+    1. [Score: 0.3249] Doc: phuong-thuc-gui-hang-hoan-tra-va-phi (Chunk: phuong-thuc-gui-hang-hoan-tra-va-phi#1)
+       Nội dung: ## Hình thức## Các bước trả hàng...
+    2. [Score: 0.2856] Doc: phuong-thuc-gui-hang-hoan-tra-va-phi (Chunk: phuong-thuc-gui-hang-hoan-tra-va-phi#9)
+       Nội dung: ## Bước 2:Đóng gói hàng trong hộp vận chuyển...
+    3. [Score: 0.2675] Doc: phuong-thuc-gui-hang-hoan-tra-va-phi (Chunk: phuong-thuc-gui-hang-hoan-tra-va-phi#25)
+       Nội dung: ## 2.1. Phí vận chuyển ban đầu khi yêu cầu Trả hàng/Hoàn tiền: *   Nếu bạn yêu cầu Trả hàng/Hoàn tiền cho tất cả sản phẩm trong đơn hàng đã...
+  => Đánh giá 2 mức:
+     * Mức 1 (Doc-level Naïve):     Không lọt Top-3
+     * Mức 2 (Content-level Thực):  Không chứa đáp án
+     * Điểm đạt được (Rubric):     0/2 điểm
+
+--- [CÂU 4] [Hỏi quy trình (Process inquiry)] ---
+Query:        Các bước gửi yêu cầu Trả hàng/Hoàn tiền trực tiếp tại trang đơn hàng trên ứng dụng Shopee như thế nào?
+Filter:       {'audience': 'buyer'}
+Gold Answer:  1. Mở app Shopee > Tôi > Chờ giao hàng/Đã giao. 2. Bấm Trả hàng/Hoàn tiền. 3. Chọn tình huống. 4. Chọn sản phẩm. 5. Chọn lý do. 6. Chọn phương án. 7. Điền mô tả & tải bằng chứng. 8. Bấm Gửi yêu cầu.
+Expected Doc: gui-yeu-cau-tra-hang-hoan-tien.md
+Required Key: ['Tôi', 'Chờ giao hàng', 'Trả hàng/Hoàn tiền', 'Cách 1']
+  [Kết quả TRUY XUẤT CHÍNH THỨC]:
+    1. [Score: 0.2936] Doc: thoi-gian-nhan-tien-hoan (Chunk: thoi-gian-nhan-tien-hoan#4)
+       Nội dung: # Thời gian nhận tiền hoàn và cách kiểm tra tiền hoàn Google Pay Thẻ tín dụng/ghi nợ liên kết với tài khoản Google Pay (Google Wallet)7 - 14...
+    2. [Score: 0.2656] Doc: quy-trinh-shopee-xu-ly-yeu-cau-tra-hang (Chunk: quy-trinh-shopee-xu-ly-yeu-cau-tra-hang#11)
+       Nội dung: # Quy trình Shopee xử lý yêu cầu Trả hàng/Hoàn tiền Hàng đã qua sử dụng--✔✔✔- Hàng nguyên vẹn nhưng không còn nhu cầu✔✔✔✔✔✔Sản phẩm hoàn trả...
+    3. [Score: 0.2569] Doc: dong-goi-don-hang-hoan-tra (Chunk: dong-goi-don-hang-hoan-tra#2)
+       Nội dung: ## Các bước đóng gói hàng hoàn trả 2. **Đóng hàng:** đóng gói và quay video quá trình đóng gói sản phẩm hoàn trả (gồm hộp của nhà sản xuất,...
+  => Đánh giá 2 mức:
+     * Mức 1 (Doc-level Naïve):     Không lọt Top-3
+     * Mức 2 (Content-level Thực):  Không chứa đáp án
+     * Điểm đạt được (Rubric):     0/2 điểm
+
+--- [CÂU 5] [Liệt kê (Listing items)] ---
+Query:        Khi khiếu nại hàng bị bể vỡ hoặc lỗi, video mở kiện hàng cần thể hiện rõ những thông tin gì?
+Filter:       {'audience': 'buyer'}
+Gold Answer:  Video cần quay liên tục không cắt ghép, rõ nét và thể hiện rõ: 1. Tình trạng kiện hàng (đủ 6 mặt); 2. Quá trình mở kiện thấy rõ mã vận đơn khớp đơn hàng; 3. Cận cảnh số lượng và tình trạng sản phẩm (đặc biệt niêm phong, tem nhãn).
+Expected Doc: chuan-bi-bang-chung-tra-hang.md
+Required Key: ['6 mặt', 'mở kiện', 'quay']
+  [Kết quả TRUY XUẤT CHÍNH THỨC]:
+    1. [Score: 0.3012] Doc: quy-trinh-shopee-xu-ly-yeu-cau-tra-hang (Chunk: quy-trinh-shopee-xu-ly-yeu-cau-tra-hang#20)
+       Nội dung: # Quy trình Shopee xử lý yêu cầu Trả hàng/Hoàn tiền Người mua không thể thao tác trên hệ thống do hết thời gian khiếu nại Thường xuyên theo...
+    2. [Score: 0.2763] Doc: phuong-thuc-gui-hang-hoan-tra-va-phi (Chunk: phuong-thuc-gui-hang-hoan-tra-va-phi#15)
+       Nội dung: ## Bước 2: Mang hàng đến bưu cục bất kỳ để gửi trả theo địa chỉ Shopee cung cấp *   Nếu đơn vị vận chuyển không đến lấy hàng đúng thời gi...
+    3. [Score: 0.2721] Doc: phuong-thuc-gui-hang-hoan-tra-va-phi (Chunk: phuong-thuc-gui-hang-hoan-tra-va-phi#8)
+       Nội dung: ## (Miễn phí trả hàng)## Bước 1:Chọn một trong số đơn vị vận chuyển hệ thống đề xuất...
+  => Đánh giá 2 mức:
+     * Mức 1 (Doc-level Naïve):     Không lọt Top-3
+     * Mức 2 (Content-level Thực):  Không chứa đáp án
+     * Điểm đạt được (Rubric):     0/2 điểm
+
+================================================================================
+BẢNG TỔNG HỢP ĐÁNH GIÁ CHẤT LƯỢNG TRUY XUẤT
+================================================================================
+Câu  | Doc-Level Match  | Content-Level Match  | Điểm Rubric 
+------------------------------------------------------------
+Q1   | Top-1            | Không chứa đáp án    | 0/2         
+Q2   | Không có         | Không chứa đáp án    | 0/2         
+Q3   | Không có         | Không chứa đáp án    | 0/2         
+Q4   | Không có         | Không chứa đáp án    | 0/2         
+Q5   | Không có         | Không chứa đáp án    | 0/2         
+------------------------------------------------------------
+Tổng kết Mức 1 (Doc trong Top-3):     1/5 câu
+Tổng kết Mức 2 (Đáp án trong Top-3): 0/5 câu
+TỔNG ĐIỂM TRUY XUẤT CÁ NHÂN:         0/10 điểm
+================================================================================
